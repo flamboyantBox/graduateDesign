@@ -1,0 +1,30 @@
+server:
+  port: 80
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.203.177:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: service-blog
+          uri: lb://service-blog
+          predicates:
+            - Path=/*/core/**
+        - id: service-sms
+          uri: lb://service-sms
+          predicates:
+            - Path=/*/sms/**
+        - id: service-oss
+          uri: lb://service-oss
+          predicates:
+            - Path=/*/oss/**

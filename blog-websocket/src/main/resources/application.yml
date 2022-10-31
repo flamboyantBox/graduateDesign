@@ -1,0 +1,13 @@
+server:
+  port: 8004
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-websocket
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.203.177:8848
+

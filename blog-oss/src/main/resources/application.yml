@@ -1,0 +1,19 @@
+server:
+  port: 8002
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-oss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.203.177:8848
+
+aliyun:
+  oss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    key-id: LTAI5tM3M9Hzp4PaaPnTfhp3
+    key-secret: cYLStAvjUdtYAVWtAZhAa8IYnCAXLJ
+    bucket-name: graduation-project-flam

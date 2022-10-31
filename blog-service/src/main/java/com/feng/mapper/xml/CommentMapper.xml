@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.mapper.CommentMapper">
+
+    <select id="listCommentBackDTO" resultType="com.feng.pojo.dto.CommentBackDTO">
+        SELECT
+        c.id,
+        u.avatar,
+        u.nickname,
+        r.nickname AS reply_nickname,
+        a.article_title,
+        c.comment_content,
+        c.create_time,
+        c.is_review
+        FROM
+        tb_comment c
+        LEFT JOIN tb_article a ON c.article_id = a.id
+        LEFT JOIN tb_user_info u ON c.user_id = u.id
+        LEFT JOIN tb_user_info r ON c.reply_user_id = r.id
+        <where>
+            c.is_delete = #{conditionVo.isDelete}
+            <if test="conditionVo.type != null and conditionVo.type == 1">
+                and c.article_id IS NOT NULL
+            </if>
+            <if test="conditionVo.type != null and conditionVo.type == 2">
+                and c.article_id IS NULL
+            </if>
+            <if test="conditionVo.isReview != null">
+                and c.is_review = #{conditionVo.isReview}
+            </if>
+            <if test="conditionVo.keywords != null">
+                and u.nickname like concat('%',#{conditionVo.keywords},'%')
+            </if>
+        </where>
+        ORDER BY
+        id DESC
+    </select>
+    <select id="commentList" resultType="com.feng.pojo.dto.CommentDTO">
+        SELECT
+        u.nickname,
+        u.avatar,
+        u.web_site,
+        c.user_id,
+        c.id,
+        c.comment_content,
+        c.create_time
+        FROM
+        tb_comment c
+        JOIN tb_user_info u ON c.user_id = u.id
+        WHERE
+        <if test="articleId != null">
+            article_id = #{articleId}
+        </if>
+        <if test="articleId == null">
+            article_id IS NULL
+        </if>
+        AND c.is_review = 1
+        AND parent_id IS NULL
+        ORDER BY
+        c.id DESC
+    </select>
+    <select id="listReplies" resultType="com.feng.pojo.dto.ReplyDTO">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        c.user_id,
+        u.nickname,
+        u.avatar,
+        u.web_site,
+        c.reply_user_id,
+        r.nickname AS reply_nickname,
+        r.web_site AS reply_web_site,
+        c.id,
+        c.parent_id,
+        c.comment_content,
+        c.create_time
+        FROM
+        tb_comment c
+        JOIN tb_user_info u ON c.user_id = u.id
+        JOIN tb_user_info r ON c.reply_user_id = r.id
+        WHERE
+        c.is_review = 1
+        AND
+        parent_id IN
+        (
+        <foreach collection="commentIdList" item="commentId" separator=",">
+            #{commentId}
+        </foreach>
+        )
+        AND
+        article_id = #{articleId}
+        ) t
+        ORDER BY create_time
+        LIMIT 4
+    </select>
+    <select id="listReplyCountByCommentId" resultType="com.feng.pojo.dto.ReplyCountDTO">
+        SELECT
+        parent_id as comment_id,
+        count(1) AS reply_count
+        FROM
+        tb_comment
+        WHERE
+        is_review = 1
+        AND
+        parent_id IN
+        <foreach open="(" collection="commentIdList" item="commentId" separator="," close=")">
+            #{commentId}
+        </foreach>
+        GROUP BY
+        parent_id
+    </select>
+    <select id="listRepliesByCommentId" resultType="com.feng.pojo.dto.ReplyDTO">
+SELECT
+        c.user_id,
+        u.nickname,
+        u.avatar,
+        u.web_site,
+        c.reply_user_id,
+        r.nickname as reply_nickname,
+        r.web_site as reply_web_site,
+        c.id,
+        c.parent_id,
+        c.comment_content,
+        c.create_time
+        FROM
+        tb_comment c
+        JOIN tb_user_info u ON c.user_id = u.id
+        JOIN tb_user_info r ON c.reply_user_id = r.id
+        WHERE
+        c.is_review = 1
+        AND
+        parent_id = #{commentId}
+        ORDER BY
+          c.id ASC
+    </select>
+</mapper>

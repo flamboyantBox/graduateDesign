@@ -1,0 +1,20 @@
+server:
+  port: 8005
+  max-http-header-size: 1048576
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-faceRecognize
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.203.177:8848
+
+face:
+  dllPath: D:\chromedownload\arcSoft\WIN64
+  appId: 3CrJ3apUm4FLK8oSTQdLswGTsWwFHj4yPHfKJu6QD5N2
+  sdkKey: BzASneDkgMLM4H4tczBmMaVGMNepfA3HFijYhjaZnWft

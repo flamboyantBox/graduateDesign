@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.mapper.OrderMapper">
+
+    <select id="orderList" resultType="com.feng.pojo.dto.OrderListDTO">
+        SELECT
+            o.id,
+            o.order_no,
+            o.article_id,
+            o.article_cover,
+            o.article_title,
+            o.total_fee,
+            COUNT(o.article_id) as article_num
+        FROM `tb_order` as o
+        where o.user_id = #{userId}
+        and o.is_delete = 0
+        and o.status = 0
+        GROUP BY o.article_id
+    </select>
+
+    <select id="receptionList" resultType="com.feng.pojo.dto.OrderListDTO">
+        SELECT
+            o.id,
+            o.order_no,
+            o.article_id,
+            o.article_cover,
+            o.article_title,
+            o.total_fee,
+            o.update_time,
+            COUNT(o.article_id) as article_num
+        FROM `tb_order` as o
+        where o.user_id = #{userId}
+        and o.is_delete = 0
+        and o.status = 1
+        GROUP BY o.article_id
+        order By o.update_time ASC
+    </select>
+</mapper>

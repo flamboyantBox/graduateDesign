@@ -1,0 +1,30 @@
+server:
+  port: 8003
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-payment
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.203.177:8848
+#ribbon:
+#  ReadTimeout: 60000
+#  ConnectTimeout: 60000
+
+alipay:
+  url: https://openapi.alipaydev.com/gateway.do
+  appid: 2021000121684625
+  privateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDANL8UDXuR5uQY+OjdK/mxhhIXyihexyfHY4/Sw6YuinP9B72s3jVOQhIVQg8TKskCAeMxez7cl5YzBDbVcAUYkT2LoLeB2jxfAoA4MFM1TV3yYppwmIB1qJIcFu1j7n6qCZPhOBVgL+fyFYHD63S/VwUMBrUTnizV1C8nhp4Fp9GsjB8gjmYfDiYvLSwVqrqu5mslfRDKkhgDc3HWRQp4mvgKixSi24ynl7dGcZzgwqtX1LJ5cZqdKlD0tDgUv2koYZ7otlSehTxIGPCQ1m3BdEQOV06cktVwQMxFXw4zdixMUN0/xPBiC8WNsfULP0WQWMFlqVtSuLRzRX+1FnUnAgMBAAECggEBALfowHx7eiVc/Bw47vfRwBVw55cDxCUMAq/yQAe3VSdrKxiNc5wY8oBzD8JvduUsJzFYhP8vojKIiRs/iQgpK3caYf1cRrplCycNyYn6E2QJJz9pwcTC5wetyEBAX90isugYSftSIoHq1ND6azP/87Gxng6nzFN9IgFoCcaUNFfLVaW36bI7Uq1J+bhFvc/Gpw47S9/yY/EkEVPqCAaoXnBKuL+OMv5v6I6XlccjGFHnZEJTSls863yYc4Go9+zKGVLaVs7KkwR9ZnAXANfx5GdWpiAFXTzn1LztJHn0zifTavf7Fn/S3thQILQpvutKSM+qAX60w2cAxpSkVBHAXiECgYEA85ERgB4TP51zo6UICQmppDhE5M1G1TK4hKLRizniQb8UwgQxF56FBK3Qhhflk6fOmHqAbVIJWrrlNycG+65knYkllWF6XyjlvpnPcJsTDk4EKVZLaPnRJCuC95anLFoHu3ehvjNbuazTZpVosYOxflwmBcEHQ2VnsOHaDGLvL2UCgYEAygR/LfNjZ0RluF6MDeChe33KQjhopJQT5SgNg3RT3uGgClE+XU9xTLBX0oYm7M4HK6mMuA4uTQG4mZtlUExqN+I8iWKE/nX/NBO0aAI6VT1oLbMNOxy8GdtbzFNMtdJvlrfSOExvGQpNSP0s0j8YH2BG2KygIBOTfEmS3gsFB5sCgYBrw09+48+YYc18JdQ8S24nHk48/SXNxjclV/RmKSIV/LjubnRaAuTPgSe1bHVCswgRJoIT3CwPXIl1sWrBiBM0MC3UveAqoimj/uFs7O+tcI8eyvNqar1Bx46WhK1KTjsFkpSZVpfKutB9nrVHdQDe615XRWQ1SXRrKkITIOK6kQKBgQCnUJgg768JjW2OCMiIid5U0DcfJ2cLwBTGO6kNkeAQ/d+2C9nSIITfFkJ2e2Nrx6vKrs98dUpFv0Ir/rcnjVJ/3GF1C+LIeeQXNqa5afb0ODq7dstjhQYJiFN8ZBVpldOUCcUTmcJ+A7lE1WM08srA2dVziW3Jg00oqCr6uje9NwKBgHDErAek7J5H50VI9IuCbOUi+oFvO6wFyqbqasb0hG93tziAxCoVpHtBxPFJeHn16rkhvca+tltlswksJ0cfsoO9+OYlF7iO0X6sctlIYXS0jLnBta8xsSxntixM+bWTKx027yf2atEHwiBdDP691RGBtN6WZJ31PaGwIw5RK5Zn
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArxmQtBwn9raGUL6V/5M4S8Kh2NCokHGvXovo7QqU9TgqNyMA6w+e6ZtY1bHkPUgosuH/xZjwS8OQepJN6hIHL6Ay49537JUL+87oGTTEaJlItJ/4NCWVGd+UnimfdP+s4qZIa6Xz/U2to1PnAIzszOedSD98Z4y8UaOAxKcnpK4tCt91pwHk5H373DpgUdRWBwp+ojYe4wvRh73Ug9Cq8EsFLF9IPDZcrb2Wh8bCX9UD+vMAX7mFAZnAbrYuSJ9PR1bh/q0IJ9r+7/NSHna3FJETCPnq2u4R1F9i4xvwyP4IkQYHUi7tozPloNR2UbfPv8UJJYB2Qw/MoeRkP1S7pwIDAQAB
+  notifyUrl: http://egg2x8.natappfree.cc/alipay/core/notify
+  returnUrl: http://localhost:8003/alipay/core/notify
+
+wechat:
+  pay:
+    appid: wx74862e0dfcf69954
+    partner: 1558950191
+    partner-key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
+    notify-url: http://guli.shop/api/order/weixinPay/weixinNotify
