@@ -16,7 +16,14 @@ spring:
       discovery:
         server-addr: 47.112.203.177:8848
 
+#WIN64
 face:
   dllPath: D:\chromedownload\arcSoft\WIN64
   appId: 3CrJ3apUm4FLK8oSTQdLswGTsWwFHj4yPHfKJu6QD5N2
   sdkKey: BzASneDkgMLM4H4tczBmMaVGMNepfA3HFijYhjaZnWft
+
+#LINUX64
+#face:
+#  dllPath: /usr/local/arcSoft/LINUX64
+#  appId: 3CrJ3apUm4FLK8oSTQdLswGb2vCNfr9bCRDkp2FvAJtD
+#  sdkKey: 8PpgN25uC4mfK2PhVtHoLWi3u98EAyVfZ1WzYM5QkHpF
