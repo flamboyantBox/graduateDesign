@@ -57,8 +57,7 @@ public class FaceRecognizeController {
     @PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public R upload(@ApiParam(value = "文件", required = true)
                     @RequestPart("file") MultipartFile file,
-                    @RequestParam("username") String username,
-                    @RequestParam("password") String password) throws IOException {
+                    @RequestParam("username") String username) throws IOException {
 
         // 转化照片格式
         InputStream inputStream = file.getInputStream();
@@ -78,12 +77,7 @@ public class FaceRecognizeController {
         UserRegisterVo userRegisterVo = new UserRegisterVo();
         userRegisterVo.setFaceInfo(faceInfo);
         userRegisterVo.setUsername(username);
-        userRegisterVo.setPassword(password);
-
-        faceLoginClient.userRegister(userRegisterVo);
-
-        // 上传至oss
-        return faceUploadClient.upload(file);
+        return faceLoginClient.userRegister(userRegisterVo);
     }
 
     @ApiOperation("人脸搜寻")

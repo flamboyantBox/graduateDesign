@@ -1,6 +1,8 @@
 server:
   port: 8005
   max-http-header-size: 1048576
+  tomcat:
+    max-http-form-post-size: 1048576
 
 spring:
   profiles:

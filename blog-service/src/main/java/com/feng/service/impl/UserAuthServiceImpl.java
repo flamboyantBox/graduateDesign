@@ -148,7 +148,7 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> i
         UserAuth userAuth = new UserAuth();
         userAuth.setUserInfoId(userInfo.getId());
         userAuth.setUsername(userRegisterVo.getUsername());
-        userAuth.setPassword(MD5.encrypt(userRegisterVo.getPassword()));
+        userAuth.setPassword(MD5.encrypt("123456"));
         userAuth.setLoginType(LoginTypeEnum.FACE.getType());
         userAuthService.save(userAuth);
     }

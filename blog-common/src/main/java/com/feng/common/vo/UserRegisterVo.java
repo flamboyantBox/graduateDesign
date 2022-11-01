@@ -17,10 +17,6 @@ public class UserRegisterVo {
     @ApiModelProperty("注册账号")
     private String username;
 
-    @NotBlank(message = "密码不能为空")
-    @ApiModelProperty("注册密码")
-    private String password;
-
     @ApiModelProperty("用户人脸信息")
     private String faceInfo;
 }
