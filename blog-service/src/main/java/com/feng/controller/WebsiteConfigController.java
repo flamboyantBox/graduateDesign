@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.feng.common.exception.Assert;
 import com.feng.common.result.R;
 import com.feng.common.result.ResponseEnum;
+import com.feng.pojo.dto.BlogBackInfoDTO;
 import com.feng.pojo.dto.BlogHomeInfoDTO;
 import com.feng.pojo.entity.UserInfo;
 import com.feng.pojo.entity.WebsiteConfig;
@@ -37,10 +38,17 @@ public class WebsiteConfigController {
         return R.ok().data("blogHomeInfo", blogHomeInfoDTO);
     }
 
-    @ApiOperation(value = "获取登录用户的信息")
-    @PostMapping("/loginInfo")
+    @ApiOperation(value = "查看后台信息")
+    @GetMapping("/blogBackInfo")
+    public R getBlogBackInfo() {
+        BlogBackInfoDTO blogBackInfoDTO = websiteConfigService.getBlogBackInfo();
+        return R.ok().data("blogBackInfo", blogBackInfoDTO);
+    }
+
+    @ApiOperation(value = "上传访客信息")
+    @PostMapping("/guest")
     public R report() {
-//        websiteConfigService.loginInfo();
+        websiteConfigService.report();
         return R.ok();
     }
 

@@ -26,4 +26,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
     List<ArticleRecommendDTO>  recommendArticleList(@Param("articleId") Integer articleId);
 
     ArticleFrontByIdDTO getArticleById(@Param("articleId") Integer articleId);
+
+    List<ArticleStatisticsDTO> listArticleStatistics();
 }

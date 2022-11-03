@@ -1,7 +1,10 @@
 package com.feng.service;
 
+import com.feng.pojo.dto.UniqueViewDTO;
 import com.feng.pojo.entity.UniqueView;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UniqueViewService extends IService<UniqueView> {
 
+    List<UniqueViewDTO> listUniqueViews();
 }

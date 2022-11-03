@@ -1,5 +1,6 @@
 package com.feng.service;
 
+import com.feng.pojo.dto.BlogBackInfoDTO;
 import com.feng.pojo.dto.BlogHomeInfoDTO;
 import com.feng.pojo.entity.WebsiteConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,4 +21,8 @@ public interface WebsiteConfigService extends IService<WebsiteConfig> {
     void updateWebsiteConfig(WebsiteConfigVo websiteConfigVo);
 
     BlogHomeInfoDTO getBlogHomeInfo();
+
+    BlogBackInfoDTO getBlogBackInfo();
+
+    void report();
 }

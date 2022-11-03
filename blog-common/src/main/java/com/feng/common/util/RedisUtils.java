@@ -57,7 +57,7 @@ public class RedisUtils {
     }
 
     public Long incr(String key, long delta) {
-        return null;
+        return redisTemplate.opsForValue().increment(key, delta);
     }
 
     public Long decr(String key, long delta) {
@@ -97,7 +97,7 @@ public class RedisUtils {
     }
 
     public Long hIncr(String key, String hashKey, Long delta) {
-        return null;
+        return redisTemplate.opsForHash().increment(key, hashKey, delta);
     }
 
     public Long hDecr(String key, String hashKey, Long delta) {
@@ -113,7 +113,9 @@ public class RedisUtils {
     }
 
     public Map<Object, Double> zReverseRangeWithScore(String key, long start, long end) {
-        return null;
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end)
+                .stream()
+                .collect(Collectors.toMap(ZSetOperations.TypedTuple::getValue, ZSetOperations.TypedTuple::getScore));
     }
 
     public Double zScore(String key, Object value) {
@@ -131,7 +133,7 @@ public class RedisUtils {
     }
 
     public Long sAdd(String key, Object... values) {
-        return null;
+        return redisTemplate.opsForSet().add(key, values);
     }
 
     public Long sAddExpire(String key, long time, Object... values) {
@@ -139,7 +141,7 @@ public class RedisUtils {
     }
 
     public Boolean sIsMember(String key, Object value) {
-        return null;
+        return redisTemplate.opsForSet().isMember(key, value);
     }
 
     public Long sSize(String key) {

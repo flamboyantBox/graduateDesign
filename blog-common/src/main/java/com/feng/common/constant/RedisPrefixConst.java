@@ -6,7 +6,7 @@ package com.feng.common.constant;
  */
 public class RedisPrefixConst {
     /**
-     * 验证码过期时间
+     * 验证码过期时间3分钟
      */
     public static final long CODE_EXPIRE_TIME = 3 * 60;
 
