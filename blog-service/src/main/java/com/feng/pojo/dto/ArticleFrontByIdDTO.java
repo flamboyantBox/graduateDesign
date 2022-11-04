@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class ArticleFrontByIdDTO {
      * 内容
      */
     private String articleContent;
+
+    /**
+     * 价格
+     */
+    private BigDecimal price;
 
     /**
      * 点赞量

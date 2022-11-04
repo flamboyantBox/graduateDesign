@@ -6,16 +6,6 @@ package com.feng.common.constant;
  */
 public class RedisPrefixConst {
     /**
-     * 验证码过期时间3分钟
-     */
-    public static final long CODE_EXPIRE_TIME = 3 * 60;
-
-    /**
-     * 验证码
-     */
-    public static final String USER_CODE_KEY = "code:";
-
-    /**
      * 博客浏览量
      */
     public static final String BLOG_VIEWS_COUNT = "blog_views_count";
@@ -56,11 +46,6 @@ public class RedisPrefixConst {
     public static final String USER_AREA = "user_area";
 
     /**
-     * TOKEN
-     */
-    public static final String TOKEN = "token";
-
-    /**
      * 访客地区
      */
     public static final String VISITOR_AREA = "visitor_area";
@@ -69,11 +54,6 @@ public class RedisPrefixConst {
      * 页面封面
      */
     public static final String PAGE_COVER = "page_cover";
-
-    /**
-     * 关于我信息
-     */
-    public static final String ABOUT = "about";
 
     /**
      * 访客

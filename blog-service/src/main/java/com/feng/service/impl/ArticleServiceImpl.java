@@ -3,10 +3,12 @@ package com.feng.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.feng.common.constant.RedisPrefixConst;
 import com.feng.common.exception.Assert;
 import com.feng.common.exception.BlogException;
 import com.feng.common.exception.GlobalException;
 import com.feng.common.result.ArticleStatusEnum;
+import com.feng.common.util.RedisUtils;
 import com.feng.mapper.TagMapper;
 import com.feng.pojo.dto.*;
 import com.feng.pojo.entity.Article;
@@ -22,13 +24,13 @@ import com.feng.service.CategoryService;
 import com.feng.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
+    @Autowired
+    private HttpSession session;
 
     @Transactional
     @Override
@@ -261,6 +269,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             throw new BlogException("文章不存在");
         }
 
+        // 更新文章浏览量
+        updateArticleViewsCount(articleId);
+
         // 查询上一篇下一篇文章
         Article lastArticle = baseMapper.selectOne(new LambdaQueryWrapper<Article>()
                 .eq(Article::getDeleted, 0)
@@ -290,8 +301,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             article.setNextArticle(articleNextPaginationDTO);
         }
 
-        // TODO 封装点赞量和浏览量
-
+        // 封装点赞量和浏览量
+        Double score = redisUtils.zScore(RedisPrefixConst.ARTICLE_VIEWS_COUNT, articleId);
+        if (Objects.nonNull(score)) {
+            article.setViewsCount(score.intValue());
+        }
+        article.setLikeCount((Integer) redisUtils.hGet(RedisPrefixConst.ARTICLE_LIKE_COUNT, articleId.toString()));
         // 封装文章信息
         try {
             article.setRecommendArticleList(recommendArticleList.get());
@@ -301,6 +316,37 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
 
         return article;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveArticleLike(Integer articleId, String userId) {
+        // 判断是否点赞
+        String articleLikeKey = RedisPrefixConst.ARTICLE_USER_LIKE + userId;
+        if (redisUtils.sIsMember(articleLikeKey, articleId)) {
+            // 点过赞则删除文章id
+            redisUtils.sRemove(articleLikeKey, articleId);
+            // 文章点赞量-1
+            redisUtils.hDecr(RedisPrefixConst.ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
+        } else {
+            // 未点赞则增加文章id
+            redisUtils.sAdd(articleLikeKey, articleId);
+            // 文章点赞量+1
+            redisUtils.hIncr(RedisPrefixConst.ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
+        }
+    }
+
+    @Async
+    public void updateArticleViewsCount(Integer articleId) {
+        // 判断是否第一次访问，增加浏览量
+        String ARTICLE_SET = "articleSet";
+        Set<Integer> articleSet = (Set<Integer>) Optional.ofNullable(session.getAttribute(ARTICLE_SET)).orElse(new HashSet<>());
+        if (!articleSet.contains(articleId)) {
+            articleSet.add(articleId);
+            session.setAttribute(ARTICLE_SET, articleSet);
+            // 浏览量+1
+            redisUtils.zIncr(RedisPrefixConst.ARTICLE_VIEWS_COUNT, articleId, 1D);
+        }
     }
 
     private void saveArticleTag(ArticleVo articleVo, Integer articleId) {

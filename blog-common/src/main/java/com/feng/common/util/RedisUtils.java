@@ -65,7 +65,7 @@ public class RedisUtils {
     }
 
     public Object hGet(String key, String hashKey) {
-        return null;
+        return redisTemplate.opsForHash().get(key, hashKey);
     }
 
     public Boolean hSet(String key, String hashKey, Object value, long time) {
@@ -105,7 +105,7 @@ public class RedisUtils {
     }
 
     public Double zIncr(String key, Object value, Double score) {
-        return null;
+        return redisTemplate.opsForZSet().incrementScore(key, value, score);
     }
 
     public Double zDecr(String key, Object value, Double score) {
@@ -119,7 +119,7 @@ public class RedisUtils {
     }
 
     public Double zScore(String key, Object value) {
-        return null;
+        return redisTemplate.opsForZSet().score(key, value);
     }
 
     public Map<Object, Double> zAllScore(String key) {

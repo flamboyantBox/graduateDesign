@@ -181,6 +181,7 @@
      article_cover,
      article_title,
      article_content,
+     a.price,
      a.type,
      a.original_url,
      a.create_time,

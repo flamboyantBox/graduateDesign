@@ -2,6 +2,7 @@ package com.feng.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -44,6 +45,9 @@ public class Article implements Serializable {
 
     @ApiModelProperty(value = "内容")
     private String articleContent;
+
+    @ApiModelProperty(value = "内容")
+    private BigDecimal price;
 
     @ApiModelProperty(value = "文章类型 1原创 2转载 3翻译")
     private Integer type;

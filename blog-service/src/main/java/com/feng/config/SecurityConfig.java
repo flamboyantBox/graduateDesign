@@ -66,9 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionEventPublisher();
     }
 
-    /**
-     * @Description: TODO UsernamePasswordAuthenticationFilter继承
-     **/
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {

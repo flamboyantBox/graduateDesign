@@ -93,5 +93,13 @@ public class ArticleController {
         articleService.updateArticleTop(articleTopVo);
         return R.ok();
     }
+
+    @ApiOperation(value = "文章点赞")
+    @ApiImplicitParam(name = "articleId", value = "文章id", required = true, dataType = "Integer")
+    @PostMapping("{userId}/{articleId}/like")
+    public R saveArticleLike(@PathVariable("articleId") Integer articleId, @PathVariable("userId") String userId) {
+        articleService.saveArticleLike(articleId, userId);
+        return R.ok();
+    }
 }
 
