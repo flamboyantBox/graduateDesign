@@ -25,7 +25,7 @@ import java.io.InputStream;
  */
 @RestController
 @RequestMapping("/api/oss/file")
-@CrossOrigin
+//@CrossOrigin
 public class FileController {
     @Autowired
     private FileService fileService;

@@ -2,6 +2,7 @@ package com.feng.pojo.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,12 +35,7 @@ public class ArticleDTO {
     /**
      * 点赞量
      */
-    private Integer likeCount;
-
-    /**
-     * 浏览量
-     */
-    private Integer viewsCount;
+    private BigDecimal price;
 
     /**
      * 文章分类名

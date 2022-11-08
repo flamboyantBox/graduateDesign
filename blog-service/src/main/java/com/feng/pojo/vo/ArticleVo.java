@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -62,6 +63,12 @@ public class ArticleVo {
      */
     @ApiModelProperty(name = "tagNameList", value = "文章标签", dataType = "List<Integer>")
     private List<String> tagNameList;
+
+    /**
+     * 商品价格
+     */
+    @ApiModelProperty(name = "price", value = "商品价格", dataType = "BigDecimal")
+    private BigDecimal price;
 
     /**
      * 文章类型

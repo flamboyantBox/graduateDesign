@@ -3,8 +3,11 @@ package com.feng.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.feng.common.result.R;
+import com.feng.pojo.dto.OrderBackListDTO;
 import com.feng.pojo.dto.OrderListDTO;
 import com.feng.pojo.entity.Order;
+import com.feng.pojo.vo.ConditionVo;
+import com.feng.pojo.vo.DeleteVo;
 import com.feng.pojo.vo.OrderVo;
 import com.feng.service.OrderService;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +45,20 @@ public class OrderController {
     public R orderList(@RequestParam Integer userId){
         List<OrderListDTO> orderList = orderService.orderList(userId);
         return R.ok().data("orderList", orderList);
+    }
+
+    @ApiOperation("后台订单列表")
+    @PostMapping("orderBackList")
+    public R orderBackList(@RequestBody ConditionVo conditionVo){
+        List<OrderBackListDTO> orderBackList = orderService.orderBackList(conditionVo);
+        return R.ok().data("orderList", orderBackList);
+    }
+
+    @ApiOperation(value = "逻辑删除订单")
+    @PostMapping("deleteBackOrder")
+    public R deleteOrder(@RequestBody DeleteVo logicDeleteVo){
+        orderService.deleteBackOrder(logicDeleteVo);
+        return R.ok();
     }
 
     @ApiOperation("用户收货列表")

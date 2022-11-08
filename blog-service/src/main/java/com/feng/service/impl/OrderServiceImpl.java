@@ -4,10 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.feng.common.util.BeanCopyUtils;
 import com.feng.common.util.OrderNoUtil;
+import com.feng.pojo.dto.OrderBackListDTO;
 import com.feng.pojo.dto.OrderListDTO;
+import com.feng.pojo.entity.Article;
 import com.feng.pojo.entity.Order;
 import com.feng.mapper.OrderMapper;
 import com.feng.pojo.entity.OrderLog;
+import com.feng.pojo.vo.ConditionVo;
+import com.feng.pojo.vo.DeleteVo;
 import com.feng.pojo.vo.OrderVo;
 import com.feng.service.OrderLogService;
 import com.feng.service.OrderService;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -109,5 +114,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public List<OrderListDTO> receptionList(Integer userId) {
         return baseMapper.receptionList(userId);
+    }
+
+    @Override
+    public List<OrderBackListDTO> orderBackList(ConditionVo conditionVo) {
+        return baseMapper.orderBackList(conditionVo);
+    }
+
+    @Override
+    public void deleteBackOrder(DeleteVo logicDeleteVo) {
+        // 修改订单逻辑删除状态
+        List<Order> orderList = logicDeleteVo.getIdList().stream()
+                .map(id -> Order.builder()
+                        .id(id)
+                        .deleted(logicDeleteVo.getIsDelete())
+                        .build())
+                .collect(Collectors.toList());
+        this.updateBatchById(orderList);
     }
 }

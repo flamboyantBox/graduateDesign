@@ -35,4 +35,32 @@
         GROUP BY o.article_id
         order By o.update_time ASC
     </select>
+
+    <select id="orderBackList" resultType="com.feng.pojo.dto.OrderBackListDTO">
+        SELECT
+            o.id,
+            o.order_no,
+            o.article_title,
+            tb.username,
+            o.total_fee,
+            o.pay_type,
+            o.`status`,
+            o.create_time,
+            ol.transaction_id
+        FROM `tb_order` o
+        LEFT JOIN tb_order_log ol
+        ON o.order_no = ol.order_no
+        left join tb_user_auth tb
+        on o.user_id = tb.user_info_id
+        <where>
+            is_delete = #{condition.isDelete}
+            <if test="condition.keywords != null">
+                and o.article_title like concat('%',#{condition.keywords},'%')
+            </if>
+            <if test="condition.status != null">
+                and status = #{condition.status}
+            </if>
+        </where>
+        order By o.create_time DESC
+    </select>
 </mapper>

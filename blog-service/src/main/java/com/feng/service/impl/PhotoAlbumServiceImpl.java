@@ -44,11 +44,10 @@ public class PhotoAlbumServiceImpl extends ServiceImpl<PhotoAlbumMapper, PhotoAl
     public void saveOrUpdatePhotoAlbum(PhotoAlbumVo photoAlbumVo) {
         // 查询相册名是否存在
         PhotoAlbum album = this.getOne(new LambdaQueryWrapper<PhotoAlbum>()
-                .select(PhotoAlbum::getId)
                 .eq(PhotoAlbum::getAlbumName, photoAlbumVo.getAlbumName()));
 
         if (Objects.nonNull(album) && !album.getId().equals(photoAlbumVo.getId())){
-            throw new BlogException(ResponseEnum.ExIST_ALBUM);
+            throw new BlogException(ResponseEnum.EXIST_ALBUM);
         }
 
         PhotoAlbum photoAlbum = PhotoAlbum.builder().build();

@@ -1,8 +1,11 @@
 package com.feng.service;
 
+import com.feng.pojo.dto.OrderBackListDTO;
 import com.feng.pojo.dto.OrderListDTO;
 import com.feng.pojo.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.feng.pojo.vo.ConditionVo;
+import com.feng.pojo.vo.DeleteVo;
 import com.feng.pojo.vo.OrderVo;
 
 import java.util.List;
@@ -27,4 +30,8 @@ public interface OrderService extends IService<Order> {
     void updateStatus(Map<String, String> map, String articleIds);
 
     List<OrderListDTO> receptionList(Integer userId);
+
+    List<OrderBackListDTO> orderBackList(ConditionVo conditionVo);
+
+    void deleteBackOrder(DeleteVo logicDeleteVo);
 }

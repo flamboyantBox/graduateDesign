@@ -29,7 +29,7 @@ public enum ResponseEnum {
     CATEGORY_EXIST(112, "分类已存在"),
     CATEGORY_EXIST_ARTICLE(113, "该分类下存在文章"),
     TAG_EXIST_ARTICLE(115, "该标签下存在文章"),
-    ExIST_ALBUM(116, "相册名已存在"),
+    EXIST_ALBUM(116, "相册名已存在"),
     LOGIN_PASSWORD_ERROR(117, "密码错误"),
     ROLE_MENU_ERROR(118, "菜单下有角色关联"),
     FACE_ERROR(119, "人脸错误"),

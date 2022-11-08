@@ -10,6 +10,7 @@
         type,
         is_top,
         a.is_delete,
+        a.price,
         a.status,
         a.create_time,
         category_name
@@ -20,6 +21,7 @@
         article_cover,
         article_title,
         type,
+        price,
         is_top,
         is_delete,
         status,
