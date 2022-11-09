@@ -1,12 +1,12 @@
 package com.feng.pojo.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
  * @since 2022-07-12
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName("tb_message")
 @ApiModel(value="Message对象", description="")
@@ -46,15 +47,17 @@ public class Message implements Serializable {
     private String ipSource;
 
     @ApiModelProperty(value = "弹幕速度")
-    private Boolean time;
+    private Integer time;
 
     @ApiModelProperty(value = "是否审核")
     private Integer isReview;
 
     @ApiModelProperty(value = "发布时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "修改时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 

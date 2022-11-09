@@ -1,5 +1,7 @@
 package com.feng;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -12,6 +14,7 @@ import com.feng.common.util.MD5;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class CodeGenerator {
     @Test
@@ -63,12 +66,9 @@ public class CodeGenerator {
 
     @Test
     public void add(){
-//        BigDecimal bigDecimal = new BigDecimal(0);
-//        bigDecimal = bigDecimal.add(new BigDecimal("100"));
-//        System.out.println(bigDecimal);
-        String encrypt = MD5.decodeMD5("123456");
-        System.out.println(encrypt);
-        System.out.println(MD5.decodeMD5(encrypt));
+        DateTime startTime = DateUtil.beginOfDay(DateUtil.offsetDay(new Date(), -7));
+        DateTime endTime = DateUtil.endOfDay(new Date());
+        System.out.println(startTime+","+endTime);
     }
 
 }

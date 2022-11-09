@@ -2,7 +2,9 @@ package com.feng.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.feng.common.result.R;
+import com.feng.common.util.BeanCopyUtils;
 import com.feng.pojo.dto.ArticleDTO;
 import com.feng.pojo.entity.ChatRecord;
 import com.feng.pojo.vo.ConditionVo;
@@ -44,6 +46,24 @@ public class ChatRecordController {
     @GetMapping("deleteChatRecord")
     public void deleteChatRecord(@RequestParam("messageId") Integer messageId) {
         chatRecordService.removeById(messageId);
+    }
+
+    @ApiOperation(value = "查看后台历史聊天记录列表")
+    @GetMapping("chatList")
+    public R getChatList() {
+        //查询聊天记录列表
+        List<ChatRecord> chatList = chatRecordService.list(new LambdaQueryWrapper<ChatRecord>()
+                .orderByDesc(ChatRecord::getCreateTime));
+        // 转换DTO
+        List<ChatRecord> chatRecordList = BeanCopyUtils.copyList(chatList, ChatRecord.class);
+        return R.ok().data("chatRecordList", chatRecordList);
+    }
+
+    @ApiOperation(value = "删除历史聊天记录")
+    @DeleteMapping("chatDelete")
+    public R deleteChatRecord(@RequestBody List<Integer> chatRecordIdList){
+        chatRecordService.removeByIds(chatRecordIdList);
+        return R.ok();
     }
 }
 

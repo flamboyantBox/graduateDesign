@@ -1,17 +1,22 @@
 package com.feng.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.feng.common.constant.RedisPrefixConst;
 import com.feng.common.exception.Assert;
 import com.feng.common.exception.BlogException;
 import com.feng.common.result.LoginTypeEnum;
 import com.feng.common.result.ResponseEnum;
 import com.feng.common.result.RoleEnum;
+import com.feng.common.result.UserAreaTypeEnum;
 import com.feng.common.util.JwtUtils;
 import com.feng.common.util.MD5;
 import com.feng.common.util.RedisUtils;
 import com.feng.common.vo.UserRegisterVo;
+import com.feng.pojo.dto.UserAreaDTO;
 import com.feng.pojo.dto.UserFrontInfoDTO;
 import com.feng.pojo.entity.UserAuth;
 import com.feng.mapper.UserAuthMapper;
@@ -24,9 +29,15 @@ import com.feng.service.UserInfoService;
 import com.feng.service.UserRoleService;
 import com.feng.service.WebsiteConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -151,5 +162,63 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> i
         userAuth.setPassword(MD5.encrypt("123456"));
         userAuth.setLoginType(LoginTypeEnum.FACE.getType());
         userAuthService.save(userAuth);
+    }
+
+    @Override
+    public List<UserAreaDTO> listUserAreas(ConditionVo conditionVo) {
+        List<UserAreaDTO> userAreaDTOList = new ArrayList<>();
+
+        switch (Objects.requireNonNull(UserAreaTypeEnum.getUserAreaType(conditionVo.getType()))) {
+            case USER:
+                // 查询注册用户区域分布
+                Object userArea = redisUtils.get(RedisPrefixConst.USER_AREA);
+                if (Objects.nonNull(userArea)) {
+                    userAreaDTOList = JSON.parseObject(userArea.toString(), List.class);
+                }
+                return userAreaDTOList;
+            case VISITOR:
+                // 查询游客区域分布
+                Map<String, Object> visitorArea = redisUtils.hGetAll(RedisPrefixConst.VISITOR_AREA);
+                if (Objects.nonNull(visitorArea)) {
+                    userAreaDTOList = visitorArea.entrySet().stream()
+                            .map(item -> UserAreaDTO.builder()
+                                    .name(item.getKey())
+                                    .value(Long.valueOf(item.getValue().toString()))
+                                    .build())
+                            .collect(Collectors.toList());
+                }
+                return userAreaDTOList;
+            default:
+                break;
+        }
+        return userAreaDTOList;
+
+    }
+
+    /**
+     * 统计用户地区
+     */
+    @Scheduled(cron = "0 0 * * * ?")
+    public void statisticalUserArea() {
+        // 统计用户地域分布
+        Map<String, Long> userAreaMap = baseMapper.selectList(new LambdaQueryWrapper<UserAuth>())
+                .stream()
+                .map(item -> {
+                    if (StringUtils.isNotBlank(item.getIpSource())) {
+                        return item.getIpSource().substring(0, 2)
+                                .replaceAll("省", "")
+                                .replaceAll("市区", "");
+                    }
+                    return "未知";
+                })
+                .collect(Collectors.groupingBy(item -> item, Collectors.counting()));
+        // 转换格式
+        List<UserAreaDTO> userAreaList = userAreaMap.entrySet().stream()
+                .map(item -> UserAreaDTO.builder()
+                        .name(item.getKey())
+                        .value(item.getValue())
+                        .build())
+                .collect(Collectors.toList());
+        redisUtils.set(RedisPrefixConst.USER_AREA, JSON.toJSONString(userAreaList));
     }
 }

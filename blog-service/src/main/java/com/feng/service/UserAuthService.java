@@ -1,10 +1,13 @@
 package com.feng.service;
 
 import com.feng.common.vo.UserRegisterVo;
+import com.feng.pojo.dto.UserAreaDTO;
 import com.feng.pojo.dto.UserFrontInfoDTO;
 import com.feng.pojo.entity.UserAuth;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.feng.pojo.vo.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -27,4 +30,6 @@ public interface UserAuthService extends IService<UserAuth> {
     void logout(Integer userId);
 
     void userRegister(UserRegisterVo userRegisterVo);
+
+    List<UserAreaDTO> listUserAreas(ConditionVo conditionVo);
 }

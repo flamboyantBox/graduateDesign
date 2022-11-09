@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
  * @since 2022-07-12
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName("tb_unique_view")
 @ApiModel(value="UniqueView对象", description="")

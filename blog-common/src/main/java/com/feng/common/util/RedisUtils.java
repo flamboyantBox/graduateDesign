@@ -76,8 +76,8 @@ public class RedisUtils {
 
     }
 
-    public Map<String, Object> hGetAll(String key) {
-        return null;
+    public Map hGetAll(String key) {
+        return redisTemplate.opsForHash().entries(key);
     }
 
     public Boolean hSetAll(String key, Map<String, Object> map, long time) {
@@ -145,7 +145,7 @@ public class RedisUtils {
     }
 
     public Long sSize(String key) {
-        return null;
+        return redisTemplate.opsForSet().size(key);
     }
 
     public Long sRemove(String key, Object... values) {

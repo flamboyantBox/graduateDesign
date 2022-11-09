@@ -6,6 +6,7 @@ import com.feng.common.result.R;
 import com.feng.common.result.ResponseEnum;
 import com.feng.common.util.JwtUtils;
 import com.feng.common.vo.UserRegisterVo;
+import com.feng.pojo.dto.UserAreaDTO;
 import com.feng.pojo.dto.UserFrontInfoDTO;
 import com.feng.pojo.vo.*;
 import com.feng.service.UserAuthService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <p>
@@ -80,6 +82,13 @@ public class UserAuthController {
     public R logout(@RequestParam("userId") Integer userId) {
         userAuthService.logout(userId);
         return R.ok().message("退出成功");
+    }
+
+    @ApiOperation(value = "获取用户区域分布")
+    @GetMapping("area")
+    public R listUserAreas(ConditionVo conditionVo) {
+        List<UserAreaDTO> userAreaDTOList = userAuthService.listUserAreas(conditionVo);
+        return R.ok().data("area", userAreaDTOList);
     }
 }
 

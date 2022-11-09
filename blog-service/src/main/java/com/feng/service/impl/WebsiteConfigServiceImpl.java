@@ -195,7 +195,6 @@ public class WebsiteConfigServiceImpl extends ServiceImpl<WebsiteConfigMapper, W
         articleMap.forEach((key, value) -> articleIdList.add((Integer) key));
         // 查询文章信息
         return articleMapper.selectList(new LambdaQueryWrapper<Article>()
-                .select(Article::getId, Article::getArticleTitle)
                 .in(Article::getId, articleIdList))
                 .stream().map(article -> ArticleRankDTO.builder()
                         .articleTitle(article.getArticleTitle())
