@@ -36,4 +36,6 @@ public interface ArticleService extends IService<Article> {
     ArticleFrontByIdDTO getArticleFrontByIdDTO(Integer articleId);
 
     void saveArticleLike(Integer articleId, String userId);
+
+    List<ArticleSearchDTO> listArticlesBySearch(ConditionVo condition);
 }

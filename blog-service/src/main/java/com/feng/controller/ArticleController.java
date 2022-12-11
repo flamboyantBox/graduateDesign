@@ -101,5 +101,12 @@ public class ArticleController {
         articleService.saveArticleLike(articleId, userId);
         return R.ok();
     }
+
+    @ApiOperation(value = "搜索文章")
+    @GetMapping("/asearch")
+    public R listArticlesBySearch(ConditionVo condition) {
+        List<ArticleSearchDTO> articleSearchDTOList =  articleService.listArticlesBySearch(condition);
+        return R.ok().data("data", articleSearchDTOList);
+    }
 }
 

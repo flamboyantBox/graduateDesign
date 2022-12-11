@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.service.ArticleTagService;
 import com.feng.service.CategoryService;
 import com.feng.service.TagService;
+import com.feng.strategy.context.SearchStrategyContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -61,6 +62,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private SearchStrategyContext searchStrategyContext;
 
     @Transactional
     @Override
@@ -334,6 +338,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             // 文章点赞量+1
             redisUtils.hIncr(RedisPrefixConst.ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
         }
+    }
+
+    @Override
+    public List<ArticleSearchDTO> listArticlesBySearch(ConditionVo condition) {
+        return searchStrategyContext.executeSearchStrategy(condition.getKeywords());
     }
 
     @Async
