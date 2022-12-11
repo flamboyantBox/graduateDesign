@@ -38,4 +38,5 @@ mybatis-plus: #mybatis
 #      logic-delete-field: is_delete
 #      logic-delete-value: 1
 #      logic-not-delete-value: 0
-
+search:
+  mode: mysql
