@@ -103,7 +103,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "搜索文章")
-    @GetMapping("/asearch")
+    @GetMapping("/search")
     public R listArticlesBySearch(ConditionVo condition) {
         List<ArticleSearchDTO> articleSearchDTOList =  articleService.listArticlesBySearch(condition);
         return R.ok().data("data", articleSearchDTOList);
